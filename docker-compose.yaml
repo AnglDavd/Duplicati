@@ -1,0 +1,24 @@
+services:
+  duplicati:
+    image: lscr.io/linuxserver/duplicati:latest
+    container_name: duplicati
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=America/Santiago
+      - CLI_ARGS= #optional
+    volumes:
+      - ./config:/config
+      - /media/ainu/Marjorie/docker_backup:/backups
+      - /home/ainu/Docker:/source
+    ports:
+      - 1019:8200
+    restart: always
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+networks: {}
