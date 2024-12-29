@@ -42,6 +42,4 @@ services:
           cpus: '0.25'
           memory: 256M
       endpoint_mode: vip
-networks:
-  duplicati_network:
-    driver: overlay
+networks: {}
