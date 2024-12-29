@@ -15,10 +15,18 @@ services:
       - 1019:8200
     restart: always
     deploy:
-      replicas: 1
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints:
+          - node.role == worker
       update_config:
         parallelism: 1
         delay: 10s
       restart_policy:
         condition: on-failure
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512M"
 networks: {}
