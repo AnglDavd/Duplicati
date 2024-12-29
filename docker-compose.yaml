@@ -15,18 +15,22 @@ services:
       - 1019:8200
     restart: always
     deploy:
-      mode: replicated
       replicas: 3
-      placement:
-        constraints:
-          - node.role == worker
-      update_config:
-        parallelism: 1
-        delay: 10s
       restart_policy:
         condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      update_config:
+        parallelism: 2
+        delay: 10s
+        failure_action: rollback
+        monitor: 60s
+        max_failure_ratio: 0.1
+        order: start-first
       resources:
         limits:
-          cpus: "0.5"
-          memory: "512M"
+          cpus: '0.50'
+          memory: 512M
+      endpoint_mode: vip
 networks: {}
