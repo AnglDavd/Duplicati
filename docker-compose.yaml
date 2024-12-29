@@ -9,8 +9,8 @@ services:
       - CLI_ARGS= #optional
     volumes:
       - ./config:/config
-      - /media/ainu/Marjorie/docker_backup:/backups
-      - /home/ainu/Docker:/source
+      - /path/to/data/docker_backup:/backups
+      - /path/to/data/Docker:/source
     ports:
       - 1019:8200
     restart: always
