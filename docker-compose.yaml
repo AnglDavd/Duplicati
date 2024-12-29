@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   duplicati:
     image: lscr.io/linuxserver/duplicati:latest
@@ -6,7 +8,7 @@ services:
       - PUID=0
       - PGID=0
       - TZ=America/Santiago
-      - CLI_ARGS= #optional
+      - CLI_ARGS= # optional
     volumes:
       - ./config:/config
       - /path/to/data/docker_backup:/backups
@@ -15,7 +17,11 @@ services:
       - 1019:8200
     restart: always
     deploy:
-      replicas: 3
+      mode: replicated
+      replicas: 2
+      placement:
+        constraints:
+          - node.role == worker
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -32,5 +38,10 @@ services:
         limits:
           cpus: '0.50'
           memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
       endpoint_mode: vip
-networks: {}
+networks:
+  duplicati_network:
+    driver: overlay
